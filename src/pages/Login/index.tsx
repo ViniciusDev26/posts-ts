@@ -1,6 +1,25 @@
 import { LockClosedIcon } from '@heroicons/react/solid'
+import { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 const Login: React.FC = () => {
+  const navigator = useNavigate();
+  const { doLogin } = useAuth();
+  
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+
+    const response = await doLogin({
+      email: "vinicius26092000@gmail.com",
+      password: "123123"
+    });
+
+    if(!response) return console.log("not authorized")
+
+    return navigator("/feed")
+  }
+
   return (
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
@@ -18,7 +37,7 @@ const Login: React.FC = () => {
               </a>
             </p>
           </div>
-          <form className="mt-8 space-y-6" action="#" method="POST">
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>

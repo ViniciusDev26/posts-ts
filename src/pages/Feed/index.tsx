@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "../../apis/api";
+import { useAuth } from "../../hooks/useAuth";
 
 type TOwner = {
   name: string
@@ -17,9 +18,11 @@ type TPosts = {
 const Feed: React.FC = () => {
   const [posts, setPosts] = useState<TPosts[]>([]);
 
+  const { userData } = useAuth()
+
   async function getPosts() {
-    const { data: posts } = await api.get("/posts");
-    setPosts(posts);
+    // const { data: posts } = await api.get("/posts");
+    // setPosts(posts);
   }
 
   useEffect(() => {
@@ -30,7 +33,7 @@ const Feed: React.FC = () => {
   
   return (
     <>
-      <h2>Olá</h2>
+      <h2>Olá {userData.name}</h2>
       <ul>
         {posts.map(post => (
           <li key={post.id}>{post.owner.name} - {post.name}</li>
